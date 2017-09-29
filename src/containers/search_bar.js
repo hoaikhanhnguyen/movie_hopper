@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTheater} from "../actions/index";
+import { fetchTheater } from "../actions/index";
 
 class SearchBar extends Component{
     constructor(props){
         super(props);
 
-        this.state ={ term: ''};
+        this.state ={ term: '', location: ''};
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);

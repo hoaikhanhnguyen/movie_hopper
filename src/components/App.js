@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from '../containers/search_bar.js'
 import TheaterList from '../containers/theater_list';
+import ShowTimeList from '../containers/showtime_list';
 import '../App.css';
 
 class App extends Component {
@@ -12,6 +13,7 @@ class App extends Component {
             <SearchBar />
         </div>
           <TheaterList />
+          <ShowTimeList />
       </div>
     );
   }
