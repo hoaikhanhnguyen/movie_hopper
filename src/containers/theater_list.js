@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchShowTime } from "../actions/index";
 
 class TheaterList extends Component {
     renderTheater(theaterData) {
-        const names = theaterData.movieTheaterArray.map(name => name.theater_name);
-        const listNames = names.map((name) =>
-            <td key={name}>{name}</td>
+        const listNames = theaterData.movieTheaterArray.map((name) =>
+            <td key={name.showtimes_url}><button
+                type="button"
+                className="btn btn-default"
+                onClick={() => console.log('clicked!')}>{name.theater_name}</button></td>
         );
-
         return (
             <tr key={theaterData.movieTheaterArray}>
                 {listNames}
@@ -17,7 +19,7 @@ class TheaterList extends Component {
 
     render() {
         return (
-            <table className="table table-hover">
+            <table className="table">
                 <thead>
                     <tr>
                         <th>Theaters</th>
