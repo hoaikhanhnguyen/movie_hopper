@@ -1,7 +1,8 @@
 import { combineReducers } from 'redux';
+import TheaterReducer from './reducer_theater';
 
 const rootReducer = combineReducers({
-    state: (state = {}) => state
+    theater: TheaterReducer
 });
 
 export default rootReducer;
