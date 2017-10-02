@@ -20,7 +20,7 @@ class SearchBar extends Component{
 
 onFormSubmit(event){
         event.preventDefault();
-        this.props.fetchTheater(this.state.term);
+        this.props.fetchTheater(this.state.term, this.state.location);
         this.setState({term: ''})
 }
 
