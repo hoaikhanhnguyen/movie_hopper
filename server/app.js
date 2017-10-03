@@ -44,9 +44,12 @@ app.post('/zipcode', (req, res) => {
 });
 
 app.post('/showtimes', (req, res) => {
-    let url = `http://www.imdb.com/showtimes/cinema/US/ci0001898/US/08820?ref_=sh_ov_th`;
 
-    request(url, (err, resp, body) => {
+    let showTimeUrl = `http://imdb.com${req.body.theaterUrl.location}`;
+    console.log('requestdata', req.body.theaterUrl.location);
+    let show_Url = `http://www.imdb.com/showtimes/cinema/US/ci0001898/US/08820?ref_=sh_ov_th`;
+
+    request(showTimeUrl, (err, resp, body) => {
         if (err) {
             console.log('Error connecting to site', err);
         }
@@ -59,16 +62,17 @@ app.post('/showtimes', (req, res) => {
             let movieDate = $(element).attr("href");
             dateUrlArray.push(movieDate)
         });
-        console.log(dateUrlArray);
+        console.log('date', dateUrlArray);
 
         $('.showtimes div a').each((i, element) => {
             let movie = {};
             movie.movie_name = $(element).attr("data-title");
             movie.show_times = $(element).attr("data-times").split('|');
             movie.duration = $(element).parent().parent().siblings('p ').children('time').text();
+            movie.movie_id = $(element).attr("data-titleid");
             movieArray.push(movie);
         });
-        console.log(movieArray);
+        console.log(movieArray.length);
         res.json({ movieArray });
     });
 

@@ -3,13 +3,23 @@ import { connect } from 'react-redux';
 import { fetchShowTime } from "../actions/index";
 
 class TheaterList extends Component {
+
+    handleButtonClick(showUrl) {
+        this.props.fetchShowTime( { location: showUrl} )
+}
+
     renderTheater(theaterData) {
-        const listNames = theaterData.movieTheaterArray.map((name) =>
-            <td key={name.showtimes_url}><button
-                type="button"
-                className="btn btn-default"
-                onClick={() => console.log('clicked!')}>{name.theater_name}</button></td>
-        );
+        const listNames = theaterData.movieTheaterArray.map((name) =>{
+            return (
+            <td key={name.showtimes_url}>
+                <button
+                    type="button"
+                    className="btn btn-default"
+                    onClick={() => {
+                        this.handleButtonClick(name.showtimes_url)
+                    }}>{name.theater_name}</button>
+            </td>
+            )});
         return (
             <tr key={theaterData.movieTheaterArray}>
                 {listNames}
@@ -26,16 +36,16 @@ class TheaterList extends Component {
                     </tr>
                 </thead>
                 <tbody>
-                {this.props.theater.map(this.renderTheater)}
+                {this.props.theater.length > 0 && this.props.theater.map((theaterData) => this.renderTheater(theaterData))}
                 </tbody>
             </table>
         )
     }
 }
 
-function mapStateToProps({ theater }) {
-    return { theater }
+function mapStateToProps({ theater, showtime }) {
+    return { theater, showtime }
     //es6. instead of passing in state as argument and returning { weather: state.weather }
 }
 
-export default connect(mapStateToProps)(TheaterList)
+export default connect(mapStateToProps,{ fetchShowTime })(TheaterList)
