@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const ZIPCODE_URL = `http://localhost:3030/zipcode`;
-const SHOWTIME_URL = 'https://localhost:3030/showtimes';
+const SHOWTIME_URL = `http://localhost:3030/showtimes`;
 
 export const FETCH_THEATER = 'FETCH_THEATER';
 
@@ -19,6 +19,7 @@ export function fetchTheater(zipcode){
 export const FETCH_SHOWTIMES = 'FETCH_SHOWTIMES';
 
 export function fetchShowTime(theaterUrl){
+    console.log(theaterUrl);
     const request = axios.post(SHOWTIME_URL, { theaterUrl });
 
     return{
