@@ -3,10 +3,23 @@ import { connect } from 'react-redux';
 
 class ShowTimeList extends Component {
 
-    renderMovieTime(time) {
-        return(
-            time + `${' '}`
-        )
+    renderMovieTime(time){
+        time = time.split(':');
+        let hours = Number(time[0]);
+        let minutes = Number(time[1]);
+        let timeValue;
+
+        if (hours > 0 && hours <= 12) {
+            timeValue= "" + hours;
+        } else if (hours > 12) {
+            timeValue= "" + (hours - 12);
+        }
+        else if (hours === 0) {
+            timeValue= "12";
+        }
+        timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+        timeValue += (hours >= 12) ? " p.m." : " a.m.";
+        return timeValue + `${' | '}`
     }
 
     renderMovie(movieData) {
@@ -17,10 +30,9 @@ class ShowTimeList extends Component {
                         type="button"
                         className="btn btn-primary"
                         onClick={() => {
-                            console.log('Clicked!', list);
                             window.open(`http://www.imdb.com/title/${list.movie_id}/?ref_=shtt_ov_tt`);
                         }}>{list.movie_name} ({list.duration})</button>
-                    <p>Times: {list.show_times.map((time) => this.renderMovieTime(time))}</p>
+                    <p><b>Times:</b> {list.show_times.map((time) => this.renderMovieTime(time))}</p>
                 </td>
             )});
         return (

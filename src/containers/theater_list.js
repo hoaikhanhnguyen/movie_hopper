@@ -26,7 +26,6 @@ class TheaterList extends Component {
             </tr>
         )
     }
-
     render() {
         return (
             <table className="table">
