@@ -3,13 +3,22 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const request = require('request');
 const bodyParser = require('body-parser');
-const cors = require('cors');
+const path = require('path');
+// const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
+app.use(express.static(path.resolve(__dirname, '..', 'build')));
+
+// Using path.resolve
+// __dirname /var/www/moviehopper.khanh.world/movie_hopper/server
+// .. /moviehopper/
+// build /moviehopper/build
+
 
 app.post('/zipcode', (req, res) => {
     // req.body
@@ -78,7 +87,8 @@ app.post('/showtimes', (req, res) => {
     });
 
 });
+
+
 app.listen(3030, () => {
     console.log('Running on ', 3030);
 });
-exports = module.exports = app;
