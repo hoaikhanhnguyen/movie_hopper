@@ -1,7 +1,12 @@
 import axios from 'axios';
 
-const ZIPCODE_URL = `http://localhost:3030/zipcode`;
-const SHOWTIME_URL = `http://localhost:3030/showtimes`;
+// These URLS will be used only within development
+// const ZIPCODE_URL = `http://localhost:3030/zipcode`;
+// const SHOWTIME_URL = `http://localhost:3030/showtimes`;
+
+// These URLS will be used only within production
+const ZIPCODE_URL = '/zipcode';
+const SHOWTIME_URL = '/showtimes';
 
 export const FETCH_THEATER = 'FETCH_THEATER';
 
