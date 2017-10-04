@@ -7,7 +7,7 @@ class SearchBar extends Component{
     constructor(props){
         super(props);
 
-        this.state ={ term: '', location: ''};
+        this.state ={ theater: '', showtime: ''};
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -15,22 +15,22 @@ class SearchBar extends Component{
 
     onInputChange(event){
         console.log(event.target.value);
-        this.setState({ term: event.target.value })
+        this.setState({ theater: event.target.value })
 }
 
 onFormSubmit(event){
         event.preventDefault();
-        this.props.fetchTheater(this.state.term, this.state.location);
-        this.setState({term: ''})
+        this.props.fetchTheater(this.state.theater, this.state.showtime);
+        this.setState({theater: ''})
 }
 
     render(){
         return(
             <form onSubmit={this.onFormSubmit} className="input-group">
                 <input
-                    placeholder="Enter a zip code to get movie theaters in your area"
+                    placeholder="Enter a zip code to get movie theaters in your area."
                     className="form-control"
-                    value={ this.state.term }
+                    value={ this.state.theater }
                     onChange={this.onInputChange} />
                 <span className="input-group-btn">
                     <button type ="submit" className="btn btn-secondary">Submit</button>
