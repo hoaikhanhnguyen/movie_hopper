@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { fetchShowTime } from "../actions/index";
 
 class ShowTimeList extends Component {
 
@@ -22,6 +23,10 @@ class ShowTimeList extends Component {
         return timeValue + `${' | '}`
     }
 
+    handleButtonClick(showUrl) {
+        this.props.fetchShowTime( { location: showUrl} )
+    }
+
     renderMovie(movieData) {
         const movieListNames = movieData.movieArray.map((list) =>{
             return (
@@ -36,11 +41,38 @@ class ShowTimeList extends Component {
                 </td>
             )});
         return (
-            <tr key={movieData.movieArray}>
-                {movieListNames}
+                <tr key={movieData.movieArray}>
+                    {movieListNames}
+                </tr>
+        )
+    }
+    renderDates(dateUrls) {
+        const dateList = dateUrls.dateUrlArray.map((link) =>{
+            return (
+                <td key={link}>
+                    <button
+                        type="button"
+                        className="btn btn-default"
+                        onClick={() => {
+                            this.handleButtonClick(link)
+                        }}>{link.slice(40, 50)}</button>
+                </td>
+            )});
+        return (
+            <tr key={dateUrls.dateUrlArray}>
+                {dateList}
             </tr>
         )
     }
+// <td>
+// <button
+// type="button"
+// className="btn btn-primary"
+// onClick={() => {
+//     console.log('props', movieData)
+//     // this.handleButtonClick(movieData.date[1])
+// }}>Tomorrow</button>
+// </td>
 
     render() {
         return (
@@ -51,7 +83,9 @@ class ShowTimeList extends Component {
                 </tr>
                 </thead>
                 <tbody>
+                {console.log(this.props)}
                 {this.props.showtime.length > 0 && this.props.showtime.map((movieData) => this.renderMovie(movieData))}
+                {this.props.showtime.length > 0 && this.props.showtime.map((dateUrls) => this.renderDates(dateUrls))}
                 </tbody>
             </table>
         )
@@ -63,4 +97,4 @@ function mapStateToProps({ showtime }) {
     //es6. instead of passing in state as argument and returning { weather: state.weather }
 }
 
-export default connect(mapStateToProps)(ShowTimeList)
+export default connect(mapStateToProps, { fetchShowTime })(ShowTimeList)

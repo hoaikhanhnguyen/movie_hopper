@@ -60,8 +60,9 @@ app.post('/showtimes', (req, res) => {
 
         $('.datepicker a[href^="/showtimes/cinema"]').each((i, element) => {
             let movieDate = $(element).attr("href");
-            dateUrlArray.push(movieDate)
+            dateUrlArray.push(movieDate);
         });
+        currentDate = dateUrlArray.shift(); // takes out first entry with is today's date
         console.log('date', dateUrlArray);
 
         $('.showtimes div a').each((i, element) => {
@@ -73,7 +74,7 @@ app.post('/showtimes', (req, res) => {
             movieArray.push(movie);
         });
         console.log(movieArray.length);
-        res.json({ movieArray });
+        res.json({ movieArray, dateUrlArray });
     });
 
 });
