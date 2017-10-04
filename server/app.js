@@ -45,6 +45,7 @@ app.post('/zipcode', (req, res) => {
             theater.showtimes_url = $(element).attr('href');
             movieTheaterArray.push(theater);
         });
+        movieTheaterArray = movieTheaterArray.slice(0, 9); // returns 10 closest theaters
         console.log('first theater', movieTheaterArray[0]);
         console.log('movieTheaterArray.length', movieTheaterArray.length);
         res.json({ movieTheaterArray });
