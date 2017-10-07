@@ -7,7 +7,7 @@ class ShowTimeList extends Component {
     renderMovieTime(time){
         time = time.split(':');
         let hours = Number(time[0]);
-        let minutes = Number(time[1]);
+        let minutes = Number(time[1].slice(0,2));
         let timeValue;
 
         if (hours > 0 && hours <= 12) {
@@ -19,7 +19,7 @@ class ShowTimeList extends Component {
             timeValue= "12";
         }
         timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
-        timeValue += (hours >= 12) ? " p.m." : " a.m.";
+        // timeValue += (hours >= 12) ? " p.m." : " a.m.";
         return timeValue + `${' | '}`
     }
 
@@ -52,10 +52,10 @@ class ShowTimeList extends Component {
                 <td key={link}>
                     <button
                         type="button"
-                        className="btn btn-default"
+                        className="btn btn-info"
                         onClick={() => {
                             this.handleButtonClick(link)
-                        }}>{link.slice(40, 50)}</button>
+                        }}>{this.sliceCorrectDate(link)}</button>
                 </td>
             )});
         return (
@@ -64,15 +64,14 @@ class ShowTimeList extends Component {
             </tr>
         )
     }
-// <td>
-// <button
-// type="button"
-// className="btn btn-primary"
-// onClick={() => {
-//     console.log('props', movieData)
-//     // this.handleButtonClick(movieData.date[1])
-// }}>Tomorrow</button>
-// </td>
+
+    sliceCorrectDate(link){
+        if(link.charAt(40) === "/"){
+            return link.slice(41, 51)
+        }else{
+            return link.slice(40, 50)
+        }
+    }
 
     render() {
         return (

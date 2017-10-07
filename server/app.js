@@ -57,7 +57,7 @@ app.post('/showtimes', (req, res) => {
 
     let showTimeUrl = `http://imdb.com${req.body.theaterUrl.location}`;
     console.log('requestdata', req.body.theaterUrl.location);
-    let show_Url = `http://www.imdb.com/showtimes/cinema/US/ci0001898/US/08820?ref_=sh_ov_th`;
+    // let show_Url = `http://www.imdb.com/showtimes/cinema/US/ci79973803/US/08820?ref_=sh_ov_th`;
 
     request(showTimeUrl, (err, resp, body) => {
         if (err) {
@@ -84,6 +84,17 @@ app.post('/showtimes', (req, res) => {
             movieArray.push(movie);
         });
         console.log(movieArray.length);
+        if(movieArray.length === 0){
+            $('.info h3 a').each((i, element) => {
+                let movie = {};
+                movie.movie_name = $(element).text();
+                movie.show_times = $(element).parent().parent().siblings(".showtimes").text().replace(/^\s+|\s+$/gm,'').split('|');
+                movie.duration = $(element).parent().parent().siblings('p ').children('time').text();
+                movie.movie_id = $(element).attr("href").slice(17, 25);
+                movieArray.push(movie);
+            });
+        }
+        console.log(movieArray);
         res.json({ movieArray, dateUrlArray });
     });
 
