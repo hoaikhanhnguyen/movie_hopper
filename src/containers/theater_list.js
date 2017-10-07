@@ -10,6 +10,7 @@ class TheaterList extends Component {
 
     renderTheater(theaterData) {
         const listNames = theaterData.movieTheaterArray.map((name) =>{
+            console.log('name', name);
             return (
             <td key={name.showtimes_url}>
                 <button
