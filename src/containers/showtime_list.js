@@ -52,7 +52,7 @@ class ShowTimeList extends Component {
                 <td key={link}>
                     <button
                         type="button"
-                        className="btn btn-info"
+                        className="btn btn-success"
                         onClick={() => {
                             this.handleButtonClick(link)
                         }}>{this.sliceCorrectDate(link)}</button>
@@ -60,6 +60,12 @@ class ShowTimeList extends Component {
             )});
         return (
             <tr key={dateUrls.dateUrlArray}>
+                <td>                    <button
+                    type="button"
+                    className="btn btn-success "
+                    onClick={() => {
+                        this.handleButtonClick(dateUrls.currentDate)
+                    }}>Today</button></td>
                 {dateList}
             </tr>
         )
