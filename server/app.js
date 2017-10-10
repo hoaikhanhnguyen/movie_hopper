@@ -94,8 +94,37 @@ app.post('/showtimes', (req, res) => {
                 movieArray.push(movie);
             });
         }
-        console.log(movieArray);
-        res.json({ movieArray, dateUrlArray });
+        // console.log(movieArray);
+
+    // one array of all movie showings
+// var showTimes = [];
+// var title;
+// movieArray.forEach(function(title){
+//     var movieName = title.movie_name;
+//     title.show_times.forEach(function(showing){
+//         var movieObject = {};
+//         movieObject.name = title.movie_name;
+//         movieObject.showTime = showing;
+//         showTimes.push(movieObject);
+//     })
+// });
+
+        var showTimes = [];
+
+        for (var i = 0; i < movieArray.length; i++) {
+            var showings = [];
+            var name = movieArray[i].movie_name;
+            var currentMovie = movieArray[i].show_times;
+            for (var j = 0; j < currentMovie.length; j++){
+                var movieObject = {};
+                movieObject.name = name;
+                movieObject.showTime = currentMovie[j];
+                showings.push(movieObject);
+            }
+            showTimes.push(showings);
+        }
+        console.log('master movie obj', showTimes);
+        res.json({ movieArray, dateUrlArray, currentDate });
     });
 
 });
