@@ -4,15 +4,15 @@ const fs = require('fs');
 const request = require('request');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// app.use(express.static(path.resolve(__dirname, '..', 'build')));
+app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 // Using path.resolve
 // __dirname /var/www/moviehopper.khanh.world/movie_hopper/server

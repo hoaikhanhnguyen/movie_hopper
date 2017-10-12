@@ -41,7 +41,7 @@ onFormSubmit(event){
 // binding action create fetchTheater to dispatch,
 // then mapping it to props gives access to this.props.fetchWeather inside the component
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({fetchTheater}, dispatch);
+    return bindActionCreators({ fetchTheater }, dispatch);
 }
 // Whenever passing a function that maps dispatch to the props of the container, it must be 2nd argument
 // null indicates there is no need for state

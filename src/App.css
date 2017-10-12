@@ -30,3 +30,7 @@ th{
 td{
   display: inline-block;
 }
+.warning{
+  width: 100%;
+  text-align: center;
+}
