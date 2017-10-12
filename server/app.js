@@ -4,15 +4,15 @@ const fs = require('fs');
 const request = require('request');
 const bodyParser = require('body-parser');
 const path = require('path');
-// const cors = require('cors');
+const cors = require('cors');
 
 const app = express();
 
-// app.use(cors());
+app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.use(express.static(path.resolve(__dirname, '..', 'build')));
+// app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 // Using path.resolve
 // __dirname /var/www/moviehopper.khanh.world/movie_hopper/server
@@ -90,7 +90,7 @@ app.post('/showtimes', (req, res) => {
                 movie.movie_name = $(element).text();
                 movie.show_times = $(element).parent().parent().siblings(".showtimes").text().replace(/^\s+|\s+$/gm,'').split('|');
                 movie.duration = $(element).parent().parent().siblings('p ').children('time').text();
-                movie.movie_id = $(element).attr("href").slice(17, 25);
+                movie.movie_id = $(element).attr("href").slice(17, 26);
                 movieArray.push(movie);
             });
         }
@@ -108,7 +108,7 @@ app.post('/showtimes', (req, res) => {
 //         showTimes.push(movieObject);
 //     })
 // });
-
+//     multi-dimensional array showings
         var showTimes = [];
 
         for (var i = 0; i < movieArray.length; i++) {
@@ -123,8 +123,8 @@ app.post('/showtimes', (req, res) => {
             }
             showTimes.push(showings);
         }
-        console.log('master movie obj', showTimes);
-        res.json({ movieArray, dateUrlArray, currentDate });
+        // console.log('master movie obj', showTimes);
+        res.json({ movieArray, dateUrlArray, currentDate, showTimes });
     });
 
 });
