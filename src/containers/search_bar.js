@@ -14,15 +14,14 @@ class SearchBar extends Component{
 }
 
     onInputChange(event){
-        console.log(event.target.value);
-        this.setState({ theater: event.target.value })
+        this.setState({ theater: event.target.value });
 }
 
 onFormSubmit(event){
         event.preventDefault();
         this.props.fetchTheater(this.state.theater, this.state.showtime);
         this.setState({theater: ''})
-}
+    }
 
     render(){
         return(
