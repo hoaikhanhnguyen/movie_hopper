@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchShowTime } from "../actions/index";
-import Showings from "../components/showings"
+import MovieSchedule from "../components/schedule"
 
 class ShowTimeList extends Component {
      showings = [];
@@ -13,7 +13,7 @@ class ShowTimeList extends Component {
          let same = false;
          for(var i = 0; i < this.showings.length; i++){
              if (this.showings[i].movie === movie_name){
-                 console.log('same movie!');
+                 this.setState({ warnings: "Already added this movie!" });
                  same = true;
              }
          }
@@ -39,7 +39,7 @@ class ShowTimeList extends Component {
              console.log('new finalTime',this.finalTime);
              return overlap = false;
          }else{
-             console.log('the time overlaps!')
+             this.setState({ warnings: "Movie times overlap!" });
          }
          return overlap
      }
@@ -53,31 +53,14 @@ class ShowTimeList extends Component {
              }
              this.duration = this.convertDuration(parseInt(movie_duration.split(" min")[0]));
              this.finalTime = this.initialTime + this.duration;
-             console.log("intialTime", this.initialTime);
-             console.log("duration", this.duration);
-             console.log("first final time", this.finalTime)
          }else if(!this.sameMovie(movie_name) && !this.timeOverlap(timeValue, movie_duration)){
              this.showings = [...this.showings, ...[{ time: timeValue, movie: movie_name, duration: movie_duration}]];
+             this.setState({ warnings: null });
          }
      }
-    // renderSchedule(showing){
-    //     return(
-    //         <td>{showing.movie} {showing.time} {showing.duration}</td>
-    //     )
-    // }
-
     handleShowingButtonClick(timeValue, movie_name, movie_duration) {
-        // console.log('timeValue',timeValue);
-        // console.log('movie_name',movie_name);
-        // console.log('movie_name',movie_duration);
          this.createSchedule(timeValue, movie_name, movie_duration);
-          console.log('showings', this.showings);
-          // return(
-          //     <td>{this.showings.map((showing) => {this.renderSchedule(showing)})}</td>
-          // );
-        this.setState(this.showings);
-        console.log('state!', this.state)
-
+        this.setState({ showings: this.showings });
     }
 
     renderMovieTime(time, movie_name, movie_duration ){
@@ -103,11 +86,9 @@ class ShowTimeList extends Component {
                  onClick={() => {this.handleShowingButtonClick(timeValue, movie_name, movie_duration)}}
                  > {timeValue} </button>
     }
-
     handleButtonClick(showUrl) {
         this.props.fetchShowTime( { location: showUrl} )
     }
-
     renderMovie(movieData) {
         const movieListNames = movieData.movieArray.map((list) =>{
             return (
@@ -148,6 +129,14 @@ class ShowTimeList extends Component {
                         this.handleButtonClick(dateUrls.currentDate)
                     }}>Today</button></td>
                 {dateList}
+                <td><button
+                    type="button"
+                    className={"btn btn-danger"}
+                    onClick={() => {
+                        this.showings=[];
+                        this.setState({ showings: this.showings, warnings: null });
+                    }}
+                >Reset Schedule</button></td>
             </tr>
         )
     }
@@ -171,12 +160,12 @@ class ShowTimeList extends Component {
                 <tbody>
                 {this.props.showtime.length > 0 && this.props.showtime.map((movieData) => this.renderMovie(movieData))}
                 {this.props.showtime.length > 0 && this.props.showtime.map((dateUrls) => this.renderDates(dateUrls))}
+                <MovieSchedule schedule={this.state}/>
                 </tbody>
             </table>
         )
     }
 }
-
 function mapStateToProps({ showtime }) {
     return { showtime }
     //es6. instead of passing in state as argument and returning { weather: state.weather }
