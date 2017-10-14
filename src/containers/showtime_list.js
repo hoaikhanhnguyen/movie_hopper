@@ -4,6 +4,12 @@ import { fetchShowTime } from "../actions/index";
 import MovieSchedule from "../components/schedule"
 
 class ShowTimeList extends Component {
+    constructor(props){
+        super(props);
+
+        this.state ={ showings: [], warnings: null};
+
+    }
      showings = [];
      initialTime = null;
      duration = null;
@@ -13,7 +19,6 @@ class ShowTimeList extends Component {
          let same = false;
          for(var i = 0; i < this.showings.length; i++){
              if (this.showings[i].movie === movie_name){
-                 this.setState({ warnings: "Already added this movie!" });
                  same = true;
              }
          }
@@ -22,11 +27,6 @@ class ShowTimeList extends Component {
 
      convertDuration(movie_duration){
          return parseInt(parseInt(movie_duration/60) + "00") + movie_duration%60
-     }
-
-     componentWillReceiveProps(nextProps){
-         console.log('nextProps', nextProps);
-         console.log('thisProps', this.props);
      }
 
      timeOverlap(timeValue, movie_duration){
@@ -39,7 +39,6 @@ class ShowTimeList extends Component {
          movieDuration = this.convertDuration(movieDuration);
          if(movieStartTime >this.finalTime){
              this.finalTime = movieStartTime + movieDuration;
-             console.log('new finalTime',this.finalTime);
              return overlap = false;
          }else{
              this.setState({ warnings: "Movie times overlap!" });
@@ -81,14 +80,12 @@ class ShowTimeList extends Component {
         }
         timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
         // timeValue += (hours >= 12) ? " p.m." : " a.m.";
-        //if proper exists render this way?
-        console.log('timeValue', timeValue);
-        console.log('final Time global', this.finalTime);
+
         let movieStartTime = parseInt(timeValue.split(":").join(""));
         if(movieStartTime < 1200){
             movieStartTime += 1200
         }
-        if(movieStartTime < this.finalTime) {
+        if(movieStartTime < this.finalTime || this.sameMovie(movie_name)) {
             return <button
                 key={time}
                 type="button"
@@ -137,7 +134,8 @@ class ShowTimeList extends Component {
                         type="button"
                         className="btn btn-success"
                         onClick={() => {
-                            this.handleButtonClick(link)
+                            this.handleButtonClick(link);
+                            this.resetSchedule();
                         }}>{this.sliceCorrectDate(link)}</button>
                 </td>
             )});
@@ -154,8 +152,7 @@ class ShowTimeList extends Component {
                     type="button"
                     className={"btn btn-danger"}
                     onClick={() => {
-                        this.showings=[];
-                        this.setState({ showings: this.showings, warnings: null });
+                        this.resetSchedule()
                     }}
                 >Reset Schedule</button></td>
             </tr>
@@ -168,6 +165,12 @@ class ShowTimeList extends Component {
         }else{
             return link.slice(40, 50)
         }
+    }
+
+    resetSchedule(){
+        this.showings=[];
+        this.setState({ showings: this.showings, warning: null});
+        this.finalTime = 0;
     }
 
     render() {
