@@ -9,7 +9,6 @@ const MovieSchedule = (props) => {
 // used && to detect if property exists, then display
         <tr>
             {props.schedule.warnings && <td className="warning">{props.schedule.warnings}</td>}
-            {console.log('showings props', props.schedule)}
             {props.schedule.showings.map((showing, index) => {
                 return(<td key={index}><b>{showing.movie}</b><p>Showing Time: {showing.time}</p><p>Movie Duration: {showing.duration}</p></td>)})}
         </tr>

@@ -24,6 +24,11 @@ class ShowTimeList extends Component {
          return parseInt(parseInt(movie_duration/60) + "00") + movie_duration%60
      }
 
+     componentWillReceiveProps(nextProps){
+         console.log('nextProps', nextProps);
+         console.log('thisProps', this.props);
+     }
+
      timeOverlap(timeValue, movie_duration){
          let overlap = true;
          let movieStartTime = parseInt(timeValue.split(":").join(""));
@@ -32,8 +37,6 @@ class ShowTimeList extends Component {
          }
          let movieDuration = parseInt(movie_duration.split(" min")[0]);
          movieDuration = this.convertDuration(movieDuration);
-         console.log('clicked movieStartTime', movieStartTime);
-         console.log('clicked movieDuration', movieDuration);
          if(movieStartTime >this.finalTime){
              this.finalTime = movieStartTime + movieDuration;
              console.log('new finalTime',this.finalTime);
@@ -62,7 +65,6 @@ class ShowTimeList extends Component {
          this.createSchedule(timeValue, movie_name, movie_duration);
         this.setState({ showings: this.showings });
     }
-
     renderMovieTime(time, movie_name, movie_duration ){
         time = time.split(':');
         let hours = Number(time[0]);
@@ -79,12 +81,32 @@ class ShowTimeList extends Component {
         }
         timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
         // timeValue += (hours >= 12) ? " p.m." : " a.m.";
-        return <button
+        //if proper exists render this way?
+        console.log('timeValue', timeValue);
+        console.log('final Time global', this.finalTime);
+        let movieStartTime = parseInt(timeValue.split(":").join(""));
+        if(movieStartTime < 1200){
+            movieStartTime += 1200
+        }
+        if(movieStartTime < this.finalTime) {
+            return <button
                 key={time}
-                 type="button"
-                 className="btn btn-secondary btn-sm"
-                 onClick={() => {this.handleShowingButtonClick(timeValue, movie_name, movie_duration)}}
-                 > {timeValue} </button>
+                type="button"
+                className="btn btn-basic btn-sm disabled"
+                onClick={() => {
+                    this.handleShowingButtonClick(timeValue, movie_name, movie_duration)
+                }}
+            > {timeValue} </button>
+        }else{
+            return <button
+                key={time}
+                type="button"
+                className="btn btn-secondary btn-sm"
+                onClick={() => {
+                    this.handleShowingButtonClick(timeValue, movie_name, movie_duration)
+                }}
+            > {timeValue} </button>
+        }
     }
     handleButtonClick(showUrl) {
         this.props.fetchShowTime( { location: showUrl} )
@@ -93,12 +115,11 @@ class ShowTimeList extends Component {
         const movieListNames = movieData.movieArray.map((list) =>{
             return (
                 <td key={list.movie_name}>
+                    <a href={`http://www.imdb.com/title/${list.movie_id}/?ref_=shtt_ov_tt"`}>
                     <button
                         type="button"
                         className="btn btn-primary"
-                        onClick={() => {
-                            window.open(`http://www.imdb.com/title/${list.movie_id}/?ref_=shtt_ov_tt`);
-                        }}>{list.movie_name} ({list.duration})</button>
+                    >{list.movie_name} ({list.duration})</button></a>
                     <p><b>Times:</b>{list.show_times.map((time) => this.renderMovieTime(time, list.movie_name, list.duration))}</p>
                 </td>
             )});

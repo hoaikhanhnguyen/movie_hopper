@@ -32,3 +32,12 @@ export function fetchShowTime(theaterUrl){
     }
 
 }
+
+export const LOADING = 'LOADING...';
+
+export function showLoader(){
+    return{
+        type: LOADING
+    }
+
+}

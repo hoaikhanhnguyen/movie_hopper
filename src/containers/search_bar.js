@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchTheater } from "../actions/index";
+import { fetchTheater, showLoader } from "../actions/index";
 
 class SearchBar extends Component{
     constructor(props){
         super(props);
 
-        this.state ={ theater: '', showtime: ''};
+        this.state ={ theater: '', showtime: '', loader: ''};
 
         this.onInputChange = this.onInputChange.bind(this);
         this.onFormSubmit = this.onFormSubmit.bind(this);
@@ -19,7 +19,8 @@ class SearchBar extends Component{
 
 onFormSubmit(event){
         event.preventDefault();
-        this.props.fetchTheater(this.state.theater, this.state.showtime);
+        this.props.showLoader(this.state.loader);
+        this.props.fetchTheater(this.state.theater);
         this.setState({theater: ''})
     }
 
@@ -41,7 +42,7 @@ onFormSubmit(event){
 // binding action create fetchTheater to dispatch,
 // then mapping it to props gives access to this.props.fetchWeather inside the component
 function mapDispatchToProps(dispatch) {
-    return bindActionCreators({ fetchTheater }, dispatch);
+    return bindActionCreators({ fetchTheater, showLoader }, dispatch);
 }
 // Whenever passing a function that maps dispatch to the props of the container, it must be 2nd argument
 // null indicates there is no need for state
