@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchShowTime } from "../actions/index";
+import { fetchShowTime, showLoader } from "../actions/index";
 
 class TheaterList extends Component {
 
@@ -9,6 +9,7 @@ class TheaterList extends Component {
 }
 
     renderTheater(theaterData) {
+
         const listNames = theaterData.movieTheaterArray.map((name) =>{
             return (
             <td key={name.showtimes_url}>
@@ -27,6 +28,9 @@ class TheaterList extends Component {
         )
     }
     render() {
+        if(this.props.theater === "Loading..."){
+            return <div className="loader"></div>;
+        }
         return (
             <table className="table">
                 <thead>
@@ -47,4 +51,4 @@ function mapStateToProps({ theater, showtime }) {
     //es6. instead of passing in state as argument and returning { weather: state.weather }
 }
 
-export default connect(mapStateToProps,{ fetchShowTime })(TheaterList)
+export default connect(mapStateToProps,{ fetchShowTime, showLoader })(TheaterList)
