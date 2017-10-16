@@ -46,8 +46,6 @@ app.post('/zipcode', (req, res) => {
             movieTheaterArray.push(theater);
         });
         movieTheaterArray = movieTheaterArray.slice(0, 9); // returns 10 closest theaters
-        console.log('first theater', movieTheaterArray[0]);
-        console.log('movieTheaterArray.length', movieTheaterArray.length);
         res.json({ movieTheaterArray });
 
     });
@@ -56,9 +54,6 @@ app.post('/zipcode', (req, res) => {
 app.post('/showtimes', (req, res) => {
 
     let showTimeUrl = `http://imdb.com${req.body.theaterUrl.location}`;
-    console.log('requestdata', req.body.theaterUrl.location);
-    // let show_Url = `http://www.imdb.com/showtimes/cinema/US/ci79973803/US/08820?ref_=sh_ov_th`;
-
     request(showTimeUrl, (err, resp, body) => {
         if (err) {
             console.log('Error connecting to site', err);
@@ -73,7 +68,6 @@ app.post('/showtimes', (req, res) => {
             dateUrlArray.push(movieDate);
         });
         currentDate = dateUrlArray.shift(); // takes out first entry with is today's date
-        console.log('date', dateUrlArray);
 
         $('.showtimes div a').each((i, element) => {
             let movie = {};
@@ -83,18 +77,33 @@ app.post('/showtimes', (req, res) => {
             movie.movie_id = $(element).attr("data-titleid");
             movieArray.push(movie);
         });
-        console.log(movieArray.length);
         if(movieArray.length === 0){
             $('.info h3 a').each((i, element) => {
                 let movie = {};
                 movie.movie_name = $(element).text();
                 movie.show_times = $(element).parent().parent().siblings(".showtimes").text().replace(/^\s+|\s+$/gm,'').split('|');
+                movie.show_times = movie.show_times.map((time) =>{
+                    if(!time.includes("am")) {
+                        time = time.split(':');
+                        let hours = Number(time[0]);
+                        let minutes = Number(time[1].slice(0, 2));
+                        let timeValue;
+                        timeValue = "" + (hours + 12);
+                        return timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+                    }else{
+                        time = time.split(':');
+                        let hours = Number(time[0]);
+                        let minutes = Number(time[1].slice(0, 2));
+                        let timeValue;
+                        timeValue = "" + hours;
+                        return timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
+                    }
+                });
                 movie.duration = $(element).parent().parent().siblings('p ').children('time').text();
                 movie.movie_id = $(element).attr("href").slice(17, 26);
                 movieArray.push(movie);
             });
         }
-        // console.log(movieArray);
 
     // one array of all movie showings
 // var showTimes = [];
@@ -108,6 +117,7 @@ app.post('/showtimes', (req, res) => {
 //         showTimes.push(movieObject);
 //     })
 // });
+
 //     multi-dimensional array showings
         var showTimes = [];
 

@@ -29,12 +29,9 @@ class ShowTimeList extends Component {
          return parseInt(parseInt(movie_duration/60) + "00") + movie_duration%60
      }
 
-     timeOverlap(timeValue, movie_duration){
+     timeOverlap(time, movie_duration){
          let overlap = true;
-         let movieStartTime = parseInt(timeValue.split(":").join(""));
-         if(movieStartTime < 1200){
-             movieStartTime += 1200
-         }
+         let movieStartTime = parseInt(time.split(":").join(""));
          let movieDuration = parseInt(movie_duration.split(" min")[0]);
          movieDuration = this.convertDuration(movieDuration);
          if(movieStartTime >this.finalTime){
@@ -46,25 +43,24 @@ class ShowTimeList extends Component {
          return overlap
      }
 
-     createSchedule(timeValue, movie_name, movie_duration){
+     createSchedule(time, movie_name, movie_duration){
          if(this.showings.length === 0){
-             this.showings = [...this.showings, ...[{ time: timeValue, movie: movie_name, duration: movie_duration}]];
-             this.initialTime = parseInt(timeValue.split(":").join(""));
-             if(this.initialTime < 1200){
-                 this.initialTime += 1200
-             }
+             this.showings = [...this.showings, ...[{ time: time, movie: movie_name, duration: movie_duration}]];
+             this.initialTime = parseInt(time.split(":").join(""));
              this.duration = this.convertDuration(parseInt(movie_duration.split(" min")[0]));
              this.finalTime = this.initialTime + this.duration;
-         }else if(!this.sameMovie(movie_name) && !this.timeOverlap(timeValue, movie_duration)){
-             this.showings = [...this.showings, ...[{ time: timeValue, movie: movie_name, duration: movie_duration}]];
+             console.log('first this.finalTime', this.finalTime)
+         }else if(!this.sameMovie(movie_name) && !this.timeOverlap(time, movie_duration)){
+             this.showings = [...this.showings, ...[{ time: time, movie: movie_name, duration: movie_duration}]];
              this.setState({ warnings: null });
          }
      }
-    handleShowingButtonClick(timeValue, movie_name, movie_duration) {
-         this.createSchedule(timeValue, movie_name, movie_duration);
+    handleShowingButtonClick(time, movie_name, movie_duration) {
+         this.createSchedule(time, movie_name, movie_duration);
         this.setState({ showings: this.showings });
     }
-    renderMovieTime(time, movie_name, movie_duration ){
+
+    timeConvert(time){
         time = time.split(':');
         let hours = Number(time[0]);
         let minutes = Number(time[1].slice(0,2));
@@ -79,30 +75,30 @@ class ShowTimeList extends Component {
             timeValue= "12";
         }
         timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;
-        // timeValue += (hours >= 12) ? " p.m." : " a.m.";
+       return timeValue += (hours >= 12) ? " p.m." : " a.m.";
+    }
 
-        let movieStartTime = parseInt(timeValue.split(":").join(""));
-        if(movieStartTime < 1200){
-            movieStartTime += 1200
-        }
+    renderMovieTime(time, movie_name, movie_duration ){
+
+        let movieStartTime = parseInt(time.split(":").join(""));
         if(movieStartTime < this.finalTime || this.sameMovie(movie_name)) {
             return <button
                 key={time}
                 type="button"
                 className="btn btn-basic btn-sm disabled"
                 onClick={() => {
-                    this.handleShowingButtonClick(timeValue, movie_name, movie_duration)
+                    this.handleShowingButtonClick(time, movie_name, movie_duration)
                 }}
-            > {timeValue} </button>
+            > {this.timeConvert(time)} </button>
         }else{
             return <button
                 key={time}
                 type="button"
                 className="btn btn-secondary btn-sm"
                 onClick={() => {
-                    this.handleShowingButtonClick(timeValue, movie_name, movie_duration)
+                    this.handleShowingButtonClick(time, movie_name, movie_duration)
                 }}
-            > {timeValue} </button>
+            > {this.timeConvert(time)} </button>
         }
     }
     handleButtonClick(showUrl) {
