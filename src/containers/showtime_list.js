@@ -49,7 +49,6 @@ class ShowTimeList extends Component {
              this.initialTime = parseInt(time.split(":").join(""));
              this.duration = this.convertDuration(parseInt(movie_duration.split(" min")[0]));
              this.finalTime = this.initialTime + this.duration;
-             console.log('first this.finalTime', this.finalTime)
          }else if(!this.sameMovie(movie_name) && !this.timeOverlap(time, movie_duration)){
              this.showings = [...this.showings, ...[{ time: time, movie: movie_name, duration: movie_duration}]];
              this.setState({ warnings: null });
