@@ -7,6 +7,7 @@ export default function(state = DEFAULT_STATE, action) {
             return [ action.payload.data];
         case LOADING:
             return "Loading...";
+        default:
+            return state
     }
-    return state;
 }
