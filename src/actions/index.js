@@ -9,6 +9,8 @@ const ZIPCODE_URL = '/zipcode';
 const SHOWTIME_URL = '/showtimes';
 
 export const FETCH_THEATER = 'FETCH_THEATER';
+export const FETCH_SHOWTIMES = 'FETCH_SHOWTIMES';
+export const LOADING = 'LOADING...';
 
 export function fetchTheater(zipcode){
     const request = axios.post(ZIPCODE_URL, { zipcode });
@@ -21,8 +23,6 @@ export function fetchTheater(zipcode){
 
 }
 
-export const FETCH_SHOWTIMES = 'FETCH_SHOWTIMES';
-
 export function fetchShowTime(theaterUrl){
     const request = axios.post(SHOWTIME_URL, { theaterUrl });
 
@@ -32,8 +32,6 @@ export function fetchShowTime(theaterUrl){
     }
 
 }
-
-export const LOADING = 'LOADING...';
 
 export function showLoader(){
     return{
