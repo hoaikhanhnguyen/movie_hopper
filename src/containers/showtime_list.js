@@ -80,25 +80,16 @@ class ShowTimeList extends Component {
     renderMovieTime(time, movie_name, movie_duration ){
 
         let movieStartTime = parseInt(time.split(":").join(""));
-        if(movieStartTime < this.finalTime || this.sameMovie(movie_name)) {
-            return <button
+        const className = `btn btn-sm ${movieStartTime < this.finalTime || this.sameMovie(movie_name) ? 'btn-basic disabled' : 'btn-secondary'}`;
+            return (<button
                 key={time}
                 type="button"
-                className="btn btn-basic btn-sm disabled"
+                className={className}
                 onClick={() => {
                     this.handleShowingButtonClick(time, movie_name, movie_duration)
                 }}
             > {this.timeConvert(time)} </button>
-        }else{
-            return <button
-                key={time}
-                type="button"
-                className="btn btn-secondary btn-sm"
-                onClick={() => {
-                    this.handleShowingButtonClick(time, movie_name, movie_duration)
-                }}
-            > {this.timeConvert(time)} </button>
-        }
+            )
     }
     handleButtonClick(showUrl) {
         this.props.fetchShowTime( { location: showUrl} )
@@ -179,7 +170,7 @@ class ShowTimeList extends Component {
                 <tbody>
                 {this.props.showtime.length > 0 && this.props.showtime.map((movieData) => this.renderMovie(movieData))}
                 {this.props.showtime.length > 0 && this.props.showtime.map((dateUrls) => this.renderDates(dateUrls))}
-                <MovieSchedule schedule={this.state}/>
+                <MovieSchedule schedule={this.state} timeConvert={this.timeConvert}/>
                 </tbody>
             </table>
         )

@@ -1,14 +1,13 @@
 const express = require('express');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const request = require('request');
 const bodyParser = require('body-parser');
 const path = require('path');
-const cors = require('cors');
+// const cors = require('cors');
 
 const app = express();
 
-app.use(cors());
+// app.use(cors());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
@@ -18,7 +17,6 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 // __dirname /var/www/moviehopper.khanh.world/movie_hopper/server
 // .. /moviehopper/
 // build /moviehopper/build
-
 
 app.post('/zipcode', (req, res) => {
     // req.body
@@ -104,20 +102,6 @@ app.post('/showtimes', (req, res) => {
                 movieArray.push(movie);
             });
         }
-
-    // one array of all movie showings
-// var showTimes = [];
-// var title;
-// movieArray.forEach(function(title){
-//     var movieName = title.movie_name;
-//     title.show_times.forEach(function(showing){
-//         var movieObject = {};
-//         movieObject.name = title.movie_name;
-//         movieObject.showTime = showing;
-//         showTimes.push(movieObject);
-//     })
-// });
-
 //     multi-dimensional array showings
         var showTimes = [];
 
@@ -133,7 +117,6 @@ app.post('/showtimes', (req, res) => {
             }
             showTimes.push(showings);
         }
-        // console.log('master movie obj', showTimes);
         res.json({ movieArray, dateUrlArray, currentDate, showTimes });
     });
 
