@@ -10,7 +10,7 @@ const MovieSchedule = (props) => {
         <tr>
             {props.schedule.warnings && <td className="warning">{props.schedule.warnings}</td>}
             {props.schedule.showings.map((showing, index) => {
-                return(<td key={index}><b>{showing.movie}</b><p>Showing Time: {props.timeConvert(showing.time)}</p><p>Movie Duration: {showing.duration}</p></td>)})}
+                return(<td key={index}><b>{showing.movie}</b> ({showing.duration})<p>Showing Time: {props.timeConvert(showing.time)}</p></td>)})}
         </tr>
     )
 

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { fetchShowTime } from "../actions/index";
 import MovieSchedule from "../components/schedule"
@@ -98,7 +99,7 @@ class ShowTimeList extends Component {
         const movieListNames = movieData.movieArray.map((list) =>{
             return (
                 <td key={list.movie_name}>
-                    <a href={`http://www.imdb.com/title/${list.movie_id}/?ref_=shtt_ov_tt"`}>
+                    <a href={`http://www.imdb.com/title/${list.movie_id}/?ref_=shtt_ov_tt"`} target="_blank">
                     <button
                         type="button"
                         className="btn btn-primary"
@@ -116,31 +117,37 @@ class ShowTimeList extends Component {
         const dateList = dateUrls.dateUrlArray.map((link) =>{
             return (
                 <td key={link}>
-                    <button
+                    <RaisedButton
                         type="button"
-                        className="btn btn-success"
+                        backgroundColor="#a4c639"
                         onClick={() => {
-                            this.handleButtonClick(link);
-                            this.resetSchedule();
-                        }}>{this.sliceCorrectDate(link)}</button>
+                        this.handleButtonClick(link);
+                        this.resetSchedule();
+                        }}
+                        label={this.sliceCorrectDate(link)} />
                 </td>
             )});
         return (
             <tr key={dateUrls.dateUrlArray}>
-                <td>                    <button
-                    type="button"
-                    className="btn btn-success "
-                    onClick={() => {
-                        this.handleButtonClick(dateUrls.currentDate)
-                    }}>Today</button></td>
+                <td>
+                    <RaisedButton
+                        type="button"
+                        default={true}
+                        onClick={() => {
+                            this.handleButtonClick(dateUrls.currentDate)
+                        }}
+                        label="Today" />
+                </td>
                 {dateList}
-                <td><button
-                    type="button"
-                    className={"btn btn-danger"}
-                    onClick={() => {
-                        this.resetSchedule()
-                    }}
-                >Reset Schedule</button></td>
+                <td>
+                    <RaisedButton
+                        type="button"
+                        secondary={true}
+                        onClick={() => {
+                            this.resetSchedule()
+                        }}
+                        label="Reset Schedule" />
+                </td>
             </tr>
         )
     }
