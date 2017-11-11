@@ -5,17 +5,29 @@
   background-color: #222;
   height: 150px;
   padding: 20px;
+  font-weight: 500;
   color: white;
+  font-family: Roboto;
 }
 .App-intro {
   font-size: large;
 }
 th{
   text-align: center;
+  font-family: monospace;
 }
 
 td{
   display: inline-block;
+}
+b{
+  font-family: Roboto;
+}
+.btn{
+  font-family: Calibri;
+}
+.btn-sm{
+  border:0px solid transparent;
 }
 .warning{
   width: 100%;
@@ -25,6 +37,7 @@ td{
   position: absolute;
   left: 50%;
   top: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
   margin: -75px 0 0 -75px;
   border: 16px solid #f3f3f3;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 import { connect } from 'react-redux';
 import { fetchShowTime, showLoader } from "../actions/index";
 
@@ -13,12 +14,19 @@ class TheaterList extends Component {
         const listNames = theaterData.movieTheaterArray.map((name) =>{
             return (
             <td key={name.showtimes_url}>
-                <button
+                <RaisedButton
                     type="button"
-                    className="btn btn-default"
+                    primary={true}
                     onClick={() => {
                         this.handleButtonClick(name.showtimes_url)
-                    }}>{name.theater_name}</button>
+                    }}
+                    label={name.theater_name} />
+                {/*<button*/}
+                    {/*type="button"*/}
+                    {/*className="btn btn-default"*/}
+                    {/*onClick={() => {*/}
+                        {/*this.handleButtonClick(name.showtimes_url)*/}
+                    {/*}}>{name.theater_name}</button>*/}
             </td>
             )});
         return (
